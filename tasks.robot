@@ -9,11 +9,14 @@ Library     RPA.HTTP
 Library     RPA.Tables
 Library     RPA.PDF
 Library     RPA.Archive
+Library     RPA.JSON
 
 
 *** Keywords ***
 Open the robot order website
-    Open Available Browser      https://robotsparebinindustries.com/#/robot-order
+    ${vault_json}=      Load JSON from file    vault.json
+    ${url}=   Get value from JSON    ${vault_json}    url
+    Open Available Browser      ${url}
 
 *** Keywords ***
 Get Orders
