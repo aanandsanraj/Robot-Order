@@ -10,17 +10,21 @@ Library     RPA.Tables
 Library     RPA.PDF
 Library     RPA.Archive
 Library     RPA.JSON
+Library     Dialogs
+Library     RPA.Robocloud.Secrets
 
 
 *** Keywords ***
 Open the robot order website
-    ${vault_json}=      Load JSON from file    vault.json
-    ${url}=   Get value from JSON    ${vault_json}    url
-    Open Available Browser      ${url}
+    ${vault_json}=      Get Secret    weburl
+    Log     ${vault_json}[url]
+    Open Available Browser      ${vault_json}[url]
+    Maximize Browser Window
 
 *** Keywords ***
 Get Orders
-    Download    https://robotsparebinindustries.com/orders.csv      overwrite=True
+    ${csv_url}=     Get Value From User     Please enter the csv url     https://robotsparebinindustries.com/orders.csv
+    Download    ${csv_url}      overwrite=True
     ${orders}=      Read Table From Csv    orders.csv
     [Return]    ${orders}
 
